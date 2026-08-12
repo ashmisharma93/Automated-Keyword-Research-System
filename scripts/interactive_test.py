@@ -23,25 +23,25 @@ def update_google_sheet(df_clustered):
     This appends new keywords to the existing sheet
     """
     try:
-        print("\n📤 Updating Google Sheet...")
+        print("\n Updating Google Sheet...")
         print("   ├─ This will APPEND keywords to Keyword_Clusters sheet")
         print("   └─ Note: Keywords accumulate (duplicates possible)")
         
         # For now, save to a local file that can be manually copied
         # In production, you'd use Google Sheets API here
         
-        print("\n⚠️  MANUAL STEP REQUIRED:")
+        print("\n  MANUAL STEP REQUIRED:")
         print("   1. Open: data/processed/clustered_keywords.csv")
         print("   2. Select all data (Ctrl+A)")
         print("   3. Copy (Ctrl+C)")
         print("   4. Paste into Google Sheets 'Keyword_Clusters' at A2")
-        print("   5. Done! ✅")
+        print("   5. Done! ")
         print("\n   OR use n8n workflow for automatic updates")
         
         return True
         
     except Exception as e:
-        print(f"❌ Error updating Google Sheet: {str(e)}")
+        print(f"Error updating Google Sheet: {str(e)}")
         return False
 
 
@@ -59,12 +59,12 @@ def process_keyword(seed, update_sheets=False):
     """
     
     print(f"\n{'='*60}")
-    print(f"🔍 RESEARCHING: '{seed}'")
+    print(f"RESEARCHING: '{seed}'")
     print(f"{'='*60}\n")
     
     try:
         # Step 1: Fetch suggestions from multiple sources
-        print("📡 Step 1: Fetching suggestions from Google, Bing, YouTube...")
+        print("Step 1: Fetching suggestions from Google, Bing, YouTube...")
         print("   ├─ Google Suggestions API")
         google = to_df(get_google_suggestions(seed), "google", seed)
         print(f"   ├─ Found {len(google)} keywords from Google")
@@ -79,56 +79,56 @@ def process_keyword(seed, update_sheets=False):
         
         # Combine and remove duplicates
         df_suggest = pd.concat([google, bing, youtube]).drop_duplicates()
-        print(f"\n✅ Total unique suggestions: {len(df_suggest)} keywords\n")
+        print(f"\n Total unique suggestions: {len(df_suggest)} keywords\n")
         
         # Step 2: LLM Enrichment with Gemini
-        print("🤖 Step 2: Enriching with Gemini AI...")
+        print(" Step 2: Enriching with Gemini AI...")
         print("   └─ Generating semantic variations...")
         gemini_keywords = enrich_keywords_with_gemini(seed, n=10)
         df_gemini = to_df(gemini_keywords, "gemini", seed)
-        print(f"\n✅ Generated {len(df_gemini)} keywords from Gemini\n")
+        print(f"\nGenerated {len(df_gemini)} keywords from Gemini\n")
         
         # Step 3: Combine all keywords
-        print("🔗 Step 3: Combining all sources...")
+        print(" Step 3: Combining all sources...")
         df_all = pd.concat([df_suggest, df_gemini]).drop_duplicates()
-        print(f"✅ Total unique keywords: {len(df_all)}\n")
+        print(f"Total unique keywords: {len(df_all)}\n")
         
         # Step 4: Score keywords
-        print("📊 Step 4: Scoring keywords (5-factor algorithm)...")
+        print("Step 4: Scoring keywords (5-factor algorithm)...")
         print("   ├─ Factor 1: Competition Score (40%)")
         print("   ├─ Factor 2: Word Count Score (25%)")
         print("   ├─ Factor 3: Source Diversity (15%)")
         print("   ├─ Factor 4: Trend Score (12%)")
         print("   └─ Factor 5: Uniqueness Score (8%)")
         df_scored = keyword_metrics.compute_keyword_scores(df_all)
-        print(f"\n✅ Scoring complete\n")
+        print(f"\n Scoring complete\n")
         
         # Step 5: Cluster keywords
-        print("🎯 Step 5: Clustering keywords...")
+        print(" Step 5: Clustering keywords...")
         print("   └─ Using K-means clustering (k=5)...")
         df_clustered = keyword_clustering.cluster_keywords(df_scored, n=5)
-        print(f"✅ Clustered into 5 groups\n")
+        print(f" Clustered into 5 groups\n")
         
         # Step 6: Save results locally
-        print("💾 Step 6: Saving results locally...")
+        print("Step 6: Saving results locally...")
         safe_seed = seed.replace(" ", "_").replace("/", "-").lower()
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"data/processed/{safe_seed}_{timestamp}_results.csv"
         my_utils.save_df(df_clustered, filename)
-        print(f"✅ Saved to: {filename}\n")
+        print(f" Saved to: {filename}\n")
         
         # Step 7: Optional Google Sheets update
         if update_sheets:
             print("Step 7: Updating Google Sheets...")
             # Save to clustered_keywords.csv for manual/n8n update
             my_utils.save_df(df_clustered, "data/processed/clustered_keywords.csv")
-            print("✅ Updated clustered_keywords.csv")
+            print(" Updated clustered_keywords.csv")
             print("   Ready for Google Sheets (manual copy-paste or n8n automation)")
         
         return df_clustered, len(df_all)
         
     except Exception as e:
-        print(f"\n❌ Error processing '{seed}': {str(e)}\n")
+        print(f"\nError processing '{seed}': {str(e)}\n")
         return None, 0
 
 
@@ -136,11 +136,11 @@ def display_results(df_clustered, seed, total_keywords):
     """Display results in a beautiful format"""
     
     if df_clustered is None or df_clustered.empty:
-        print("❌ No results to display")
+        print("No results to display")
         return
     
     print(f"\n{'='*60}")
-    print(f"✨ TOP KEYWORDS FOR: '{seed}'")
+    print(f"TOP KEYWORDS FOR: '{seed}'")
     print(f"{'='*60}\n")
     
     # Show top 15 keywords
@@ -156,7 +156,7 @@ def display_results(df_clustered, seed, total_keywords):
     print("-" * 60)
     
     # Statistics
-    print(f"\n📊 STATISTICS:")
+    print(f"\n STATISTICS:")
     print(f"   • Total Keywords Generated: {total_keywords}")
     print(f"   • Highest Score: {df_clustered['score'].max():.2f}")
     print(f"   • Lowest Score: {df_clustered['score'].min():.2f}")
@@ -164,14 +164,14 @@ def display_results(df_clustered, seed, total_keywords):
     print(f"   • Clusters: {df_clustered['cluster'].max() + 1}")
     
     # Show keywords by source
-    print(f"\n📡 KEYWORDS BY SOURCE:")
+    print(f"\nKEYWORDS BY SOURCE:")
     source_counts = df_clustered['source'].value_counts()
     for source, count in source_counts.items():
         percentage = (count / len(df_clustered)) * 100
         print(f"   • {source.capitalize()}: {count} keywords ({percentage:.1f}%)")
     
     # Show keywords by cluster
-    print(f"\n🎯 KEYWORDS BY CLUSTER:")
+    print(f"\nKEYWORDS BY CLUSTER:")
     for cluster in sorted(df_clustered['cluster'].unique()):
         cluster_data = df_clustered[df_clustered['cluster'] == cluster]
         top_3 = cluster_data.head(3)['keyword'].tolist()
@@ -184,7 +184,7 @@ def display_results(df_clustered, seed, total_keywords):
 def ask_update_sheets():
     """Ask user if they want to update Google Sheets"""
     print("\n" + "="*60)
-    print("🔄 UPDATE GOOGLE SHEETS?")
+    print("UPDATE GOOGLE SHEETS?")
     print("="*60)
     print("\nOptions:")
     print("  (y) YES  - Update Google Sheets (manual copy-paste or n8n)")
@@ -203,14 +203,14 @@ def ask_update_sheets():
             print("\n" + "="*60)
             print("HOW TO UPDATE GOOGLE SHEETS:")
             print("="*60)
-            print("\n📋 METHOD 1: Manual Copy-Paste (Instant)")
+            print("\nMETHOD 1: Manual Copy-Paste (Instant)")
             print("   1. Find file: data/processed/clustered_keywords.csv")
             print("   2. Open Google Sheet: Keyword_Clusters")
             print("   3. Click cell A2 (first data row)")
             print("   4. Copy all data from CSV and paste into Sheet")
-            print("   5. Done! ✅")
+            print("   5. Done! ")
             
-            print("\n🤖 METHOD 2: n8n Automation (Hands-off)")
+            print("\n METHOD 2: n8n Automation (Hands-off)")
             print("   1. n8n workflow is already configured")
             print("   2. Set to run daily at 9 AM")
             print("   3. Keywords automatically append to Google Sheet")
@@ -219,14 +219,14 @@ def ask_update_sheets():
             
             print("\n" + "="*60 + "\n")
         else:
-            print("❌ Please enter y, n, or h")
+            print("Please enter y, n, or h")
 
 
 def main():
     """Main interactive loop"""
     
     print("\n" + "="*60)
-    print("🔍 KEYWORD RESEARCH AI AGENT - INTERACTIVE MODE")
+    print("KEYWORD RESEARCH AI AGENT - INTERACTIVE MODE")
     print("="*60)
     print("\nAutomatically research keywords using:")
     print("  • Google, Bing, YouTube APIs (free)")
@@ -234,10 +234,10 @@ def main():
     print("  • Advanced 5-factor scoring algorithm")
     print("  • K-means clustering")
     print("\nFeatures:")
-    print("  ✅ Test unlimited keywords")
-    print("  ✅ Optional Google Sheets update")
-    print("  ✅ Auto-save results with timestamp")
-    print("  ✅ Beautiful statistics & clustering")
+    print("  Test unlimited keywords")
+    print("  Optional Google Sheets update")
+    print("  Auto-save results with timestamp")
+    print("  Beautiful statistics & clustering")
     print("\n" + "="*60 + "\n")
     
     session_count = 0
@@ -245,37 +245,37 @@ def main():
     while True:
         try:
             # Get user input
-            seed = input("\n🔎 Enter a seed keyword to research (or 'quit' to exit): ").strip()
+            seed = input("\n Enter a seed keyword to research (or 'quit' to exit): ").strip()
             
             # Check for exit command
             if seed.lower() in ['quit', 'exit', 'q', 'no']:
-                print("\n👋 Thank you for using Keyword Research AI Agent!")
+                print("\nThank you for using Keyword Research AI Agent!")
                 print(f"   Researched {session_count} keyword(s) this session")
                 print("   Results saved to: data/processed/")
-                print("\n📝 Quick Tips:")
-                print("   • Use n8n for daily automated updates to Google Sheets")
-                print("   • Check data/processed/ for all results")
-                print("   • Share results with your team\n")
+                print("\nQuick Tips:")
+                print("   - Use n8n for daily automated updates to Google Sheets")
+                print("   - Check data/processed/ for all results")
+                print("   - Share results with your team\n")
                 break
             
             # Validate input
             if not seed:
-                print("❌ Please enter a keyword")
+                print(" Please enter a keyword")
                 continue
             
             if len(seed) < 2:
-                print("❌ Keyword must be at least 2 characters")
+                print("Keyword must be at least 2 characters")
                 continue
             
             if len(seed) > 100:
-                print("❌ Keyword is too long (max 100 characters)")
+                print(" Keyword is too long (max 100 characters)")
                 continue
             
             # Ask if user wants to update Google Sheets
             update_sheets = ask_update_sheets()
             
             # Process the keyword
-            print("\n⏳ Processing... (this may take 10-15 seconds)")
+            print("\n Processing... (this may take 10-15 seconds)")
             df_clustered, total_keywords = process_keyword(seed, update_sheets=update_sheets)
             
             # Display results
@@ -284,23 +284,23 @@ def main():
                 session_count += 1
                 
                 if update_sheets:
-                    print("✅ Results saved locally AND prepared for Google Sheets")
-                    print("   📌 Next step: Copy data/processed/clustered_keywords.csv to Google Sheet")
+                    print("Results saved locally AND prepared for Google Sheets")
+                    print("    Next step: Copy data/processed/clustered_keywords.csv to Google Sheet")
                 else:
-                    print("✅ Results saved locally")
-                    print("   📌 If you want to update Google Sheets later, reply 'y' next time")
+                    print(" Results saved locally")
+                    print("    If you want to update Google Sheets later, reply 'y' next time")
                 
                 print("\nType another keyword to continue, or 'quit' to exit")
             else:
-                print("⚠️  Could not process this keyword. Please try another.\n")
+                print("  Could not process this keyword. Please try another.\n")
         
         except KeyboardInterrupt:
-            print("\n\n⏹️  Interrupted by user")
+            print("\n\n Interrupted by user")
             print(f"   Researched {session_count} keyword(s) this session")
             break
         
         except Exception as e:
-            print(f"\n❌ Unexpected error: {str(e)}")
+            print(f"\n Unexpected error: {str(e)}")
             print("   Please try another keyword\n")
 
 
