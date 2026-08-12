@@ -1,5 +1,4 @@
-# Keyword Research AI Agent 
-
+# SeedRank - Automated Keyword Research System
 Automatically generate 40-50 high-quality long-tail keywords using multi-source API collection and LLM enrichment. Scores keywords by opportunity and clusters them intelligently. Production-ready with n8n automation.
 
 ---
@@ -10,7 +9,7 @@ Automatically generate 40-50 high-quality long-tail keywords using multi-source 
 Content creators and SEO professionals spend **4+ hours researching keywords** for every article. Tools like Semrush cost **$300+/month**. Manual research is time-consuming, expensive, and incomplete.
 
 ### Solution
-This AI Agent automates keyword research by:
+This system automates keyword research by:
 1. Collecting suggestions from **Google, Bing, and YouTube APIs** (free)
 2. Enriching with **Gemini LLM** for semantic variations (10+ new keywords)
 3. Scoring by opportunity (low competition = high opportunity)
