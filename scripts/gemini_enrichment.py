@@ -7,7 +7,6 @@ load_dotenv()
 genai.configure(api_key=os.getenv("GEMINI_KEY"))
 
 def enrich_keywords_with_gemini(seed_keyword, n=20):
-    # Improved prompt for cleaner output
     prompt = f"""Generate exactly {n} long-tail keywords related to '{seed_keyword}' for SEO.
 
 STRICT Requirements:
@@ -58,7 +57,7 @@ Generate {n} keywords for '{seed_keyword}':"""
             if len(line) >= 5 and line not in keywords:
                 keywords.append(line)
         
-        print(f"✓ Gemini enrichment successful! Generated {len(keywords)} clean keywords")
+        print(f"Gemini enrichment successful! Generated {len(keywords)} clean keywords")
         return keywords[:n]  # Return exactly n keywords
 
     except Exception as e:

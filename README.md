@@ -313,7 +313,7 @@ Clear Sheet → Append Rows → Limit Results → Send Email
 
 ### Email Notification
 Automated daily report showing:
-- "Your keyword clustering agent has completed today's run" 
+- "Your keyword clustering system has completed today's run" 
 - Top 10 keywords by opportunity score
 - Direct link to Google Sheet
 - Sent via n8n automation
