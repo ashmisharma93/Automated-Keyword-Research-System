@@ -120,8 +120,7 @@ STEP 4: Clustering & Output
 
 ### 1️ Clone Repository
 ```bash
-git clone https://github.com/ashmisharma93/Keyword_Research_AI_Agent.git
-cd Keyword_Research_AI_Agent
+git clone https://github.com/ashmisharma93/Automated-Keyword-Research-System.git
 ```
 
 ### 2️ Create Virtual Environment
@@ -147,7 +146,7 @@ cp .env.example .env
 
 **Get Gemini API key (Free):** https://ai.google.dev/
 
-### 5️ Run the Agent
+### 5️ Run the system
 ```bash
 python scripts/main.py
 ```
@@ -428,8 +427,7 @@ MIT License - Feel free to use for personal or commercial projects.
 
 ```bash
 # 1. Clone
-git clone https://github.com/ashmisharma93/Keyword_Research_AI_Agent.git
-cd Keyword_Research_AI_Agent
+git clone https://github.com/ashmisharma93/Automated-Keyword-Research-System.git
 
 # 2. Setup
 python -m venv venv && source venv/bin/activate
