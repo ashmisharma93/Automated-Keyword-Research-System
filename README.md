@@ -1,5 +1,5 @@
 # SeedRank - Automated Keyword Research System
-Automatically generate 40-50 high-quality long-tail keywords using multi-source API collection and LLM enrichment. Scores keywords by opportunity and clusters them intelligently. Production-ready with n8n automation.
+Automatically generate 40-50 high-quality long-tail keywords using multi-source API collection and LLM enrichment. Scores keywords by opportunity and clusters them intelligently.
 
 ---
 
